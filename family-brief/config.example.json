@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "profile_id": "synthetic_household",
+  "timezone": "Etc/UTC",
+  "locale": "en-GB",
+  "household": {
+    "members": [
+      {
+        "id": "child_a",
+        "display_name": "Child A",
+        "aliases": [],
+        "attributes": {
+          "school_division": "Junior Division"
+        }
+      },
+      {
+        "id": "child_b",
+        "display_name": "Child B",
+        "aliases": [],
+        "attributes": {
+          "school_division": "Senior Division"
+        }
+      }
+    ]
+  },
+  "sources": [
+    {
+      "id": "school",
+      "name": "Example Learning Centre",
+      "enabled": true,
+      "members": [
+        "child_a",
+        "child_b"
+      ],
+      "member_mapping_confirmed": true,
+      "verified_rules": [
+        {
+          "sender_addresses": [],
+          "sender_domains": [
+            "school.example"
+          ],
+          "required_context": []
+        }
+      ],
+      "discovery_terms": [
+        "Example Learning Centre"
+      ],
+      "platform_hints": [],
+      "default_category": "school",
+      "communication": {
+        "include": [
+          "events",
+          "deadlines",
+          "action_required",
+          "schedule_changes",
+          "cancellations",
+          "academic_updates"
+        ],
+        "summarize": [
+          "newsletters",
+          "general_information"
+        ],
+        "ignore": [],
+        "natural_language_rules": []
+      }
+    }
+  ],
+  "retrieval": {
+    "overlap_minutes": 15,
+    "initial_lookback_days": 30,
+    "include_spam_trash": false,
+    "max_pages": 100
+  },
+  "calendar": {
+    "default_calendar_id": null,
+    "search_calendar_ids": [],
+    "destination_by_source": {},
+    "categories": [
+      "school",
+      "swimming",
+      "martial_arts",
+      "deadline",
+      "performance",
+      "general"
+    ],
+    "colors": {
+      "by_category": {},
+      "by_source": {},
+      "precedence": [
+        "category",
+        "source"
+      ]
+    },
+    "sharing": {
+      "default_attendees": [],
+      "attendees_by_source": {},
+      "send_updates": "all"
+    },
+    "title_template": "{members}: {title}",
+    "date_only_policy": "ask",
+    "missing_end_policy": "ask",
+    "actions": {
+      "default": "ask",
+      "rules": []
+    }
+  },
+  "commands": {
+    "aliases": {}
+  },
+  "automation": {
+    "digest": {
+      "enabled": false,
+      "schedule": null
+    },
+    "alerts": {
+      "enabled": false,
+      "schedule": null,
+      "types": [
+        "cancellation",
+        "closure",
+        "schedule_change"
+      ]
+    },
+    "notification_policy": "meaningful_changes_only"
+  },
+  "privacy": {
+    "retain_raw_messages": false,
+    "retention_days": 90,
+    "log_content": false
+  },
+  "setup": {
+    "status": "needs_setup",
+    "unresolved": [
+      "Replace synthetic household and source values.",
+      "Confirm timezone, source matching and calendar access."
+    ]
+  }
+}

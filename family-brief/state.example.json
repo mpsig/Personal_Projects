@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "profile_id": "synthetic_household",
+  "config_hash": null,
+  "checkpoints": {
+    "school": {
+      "timestamp": null,
+      "legacy_date": null,
+      "precision": "unset",
+      "provenance": null
+    }
+  },
+  "alert_checkpoints": {
+    "school": {
+      "timestamp": null,
+      "legacy_date": null,
+      "precision": "unset",
+      "provenance": null
+    }
+  },
+  "processed_messages": [],
+  "items": [],
+  "proposals": [],
+  "action_journal": [],
+  "last_run": null,
+  "migration": {
+    "status": "not_needed",
+    "legacy_events": []
+  },
+  "automation_jobs": {},
+  "notifications": []
+}
