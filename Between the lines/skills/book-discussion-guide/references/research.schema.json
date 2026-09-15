@@ -122,7 +122,6 @@
             "minLength": 1
           },
           "sourceIds": {
-            "minItems": 1,
             "type": "array",
             "items": {
               "type": "string",

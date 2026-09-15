@@ -6,6 +6,7 @@ import type { StoredReport } from '../lib/schema';
 import Connection from './connection';
 type Result = {report:StoredReport;markdown:string;cached:boolean};
 export default function Home() {
+  const [updates,setUpdates] = useState<string[]>([]);
   const [library,setLibrary] = useState<Entry[]>([]);
   const [title,setTitle] = useState(''); const [author,setAuthor] = useState('');
   const [grade,setGrade] = useState(''); const [depth,setDepth] = useState('standard');
@@ -27,12 +28,29 @@ export default function Home() {
     finally { setBusy(false); }
   }
   async function prepare(event:React.FormEvent) {
-    event.preventDefault(); setBusy(true); setError(''); setCandidates([]); setResult(null);
+    event.preventDefault(); setBusy(true); setError(''); setCandidates([]); setResult(null); setUpdates([]);
     try {
-      const response = await fetch('/api/reports',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({title,author,grade,depth,provider})});
-      const data = await response.json();
-      if (!response.ok) { setCandidates(data.candidates ?? []); throw new Error(data.error); }
-      setResult(data); await refresh();
+      const response = await fetch('/api/reports',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/x-ndjson'},body:JSON.stringify({title,author,grade,depth,provider})});
+      if (!response.ok) {
+        const data=await response.json();setCandidates(data.candidates ?? []);throw new Error(data.error);
+      }
+      if (!response.body) throw new Error('Could not connect to the progress stream.');
+      const reader=response.body.getReader();const decoder=new TextDecoder();let pending='';let completed=false;
+      try {
+        while(true) {
+          const {done,value}=await reader.read();pending+=decoder.decode(value,{stream:!done});
+          const lines=pending.split('\n');pending=lines.pop() ?? '';
+          for(const line of lines) {
+            if(!line.trim())continue;const event=JSON.parse(line);
+            if(event.type==='progress')setUpdates(previous=>[...previous,event.message]);
+            if(event.type==='error'){setCandidates(event.candidates ?? []);throw new Error(event.error);}
+            if(event.type==='result'){setResult(event);completed=true;}
+          }
+          if(done)break;
+        }
+      } finally {reader.releaseLock();}
+      if(!completed)throw new Error('Connection interrupted. Check your library before trying again; the guide may still be saving.');
+      await refresh();
     } catch(e) { setError(e instanceof Error ? e.message : 'Could not prepare report.'); }
     finally { setBusy(false); }
   }
@@ -55,7 +73,7 @@ export default function Home() {
         </aside>
         <section className="reading" aria-label="Discussion guide" aria-busy={busy}>
           {error && <div className="notice error" role="alert">{error}{candidates.map((c,i)=><button key={`${c.title}-${c.author}-${i}`} onClick={()=>{setTitle(c.title);setAuthor(c.author);setView('new');setCandidates([]);setError('Book selected. Choose Find or create guide to continue.');}}>{c.title} — {c.author}</button>)}</div>}
-          {busy && <div className="notice" role="status">Checking saved reports, then researching only if needed. You can leave this page open while your guide is prepared.</div>}
+          {busy && <div className="notice" role="status"><strong>Preparing your guide</strong><ol>{updates.map((message,index)=><li key={index}>{index < updates.length-1 ? '✓ ' : ''}{message}</li>)}</ol>{updates.length===0 && <p>Connecting to the app…</p>}</div>}
           {result ? <><div className="reportbar"><span>{result.cached ? 'FROM YOUR LIBRARY' : 'RESEARCHED & SAVED'}</span><div><a href={`/api/reports/${result.report.id}?format=md`}>Download report</a><a href={`/api/reports/${result.report.id}?format=json`}>JSON</a><button onClick={()=>window.print()}>Print</button></div></div>{result.cached && <p className="cache-note">Saved guide by {result.report.guide.book.author}. Original settings: grade {result.report.input.grade || 'not specified'}, {result.report.input.depth} depth.</p>}<article><ReactMarkdown>{result.markdown}</ReactMarkdown></article></> : <div className="empty"><div className="book-art" aria-hidden="true"><div className="book-cover"><span>THE SPACE<br/>BETWEEN<br/>THE LINES</span><i>More than a summary.<br/>A place to begin.</i><b>↗</b></div><div className="book-shadow"/></div><span className="eyebrow">COME CURIOUS</span><h2>You don’t have to read every page<br/>to ask a thoughtful question.</h2><p>Start with a book. Leave with a better way into the conversation.</p><div className="features"><div><b>Understand</b><span>The essential story,<br/>including the ending.</span></div><div><b>Explore</b><span>Five questions that<br/>go beyond recall.</span></div><div><b>Connect</b><span>Ideas that reach<br/>beyond the book.</span></div></div><div className="evidence-note">SOURCE-LINKED · SPOILER-FILLED · ALWAYS PARENT-FACING</div></div>}
         </section>
       </div>

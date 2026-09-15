@@ -21,9 +21,9 @@ export function renderMarkdown(r: StoredReport): string {
     '## Beyond the book\n', ...g.parallels.map(x => `### ${clean(x.title)}\n\n*${x.kind === 'hypothetical' ? 'Hypothetical everyday situation' : 'Documented real-world example'}*\n\n${p(x.connection, x.claimIds)}\n**Try asking:** ${clean(x.discussionPrompt)}\n`),
     '## Three things about the author\n', ...g.authorFacts.map(x => p(x.text, x.claimIds)),
     `## One big question\n\n${clean(g.bigQuestion)}\n`,
-    '## In their words\n', ...g.quotes.map(q => { const s = g.sources.find(s => s.id === q.sourceId)!; return `> ${clean(q.text)}\n\n— [${clean(s.title)}](<${s.url}>)\n\n${clean(q.context)} ${refs(q.claimIds)}\n`; }),
+    ...(g.quotes.length ? ['## In their words\n'] : []), ...g.quotes.map(q => { const s = g.sources.find(s => s.id === q.sourceId)!; return `> ${clean(q.text)}\n\n— [${clean(s.title)}](<${s.url}>)\n\n${clean(q.context)} ${refs(q.claimIds)}\n`; }),
     ...(g.limitations.length ? ['## Evidence limitations\n', ...g.limitations.map(x => `- ${clean(x)}\n`)] : []),
     '## Sources\n', ...g.sources.map(s => `- **${clean(s.id)}** — [${clean(s.title)}](<${s.url}>). ${clean(s.publisher)}; ${clean(s.kind)}. ${s.author ? `By ${clean(s.author)}. ` : ''}Published: ${clean(s.publishedAt ?? 'not provided')}; accessed ${clean(s.accessedAt)}. ${clean(s.credibility)}\n`),
-    '## Claims and evidence\n', ...g.claims.map(c => `- **${clean(c.id)} · ${c.kind}** — ${p(c.text, [c.id])}`),
+    ...(g.claims.length ? ['## Claims and evidence\n'] : []), ...g.claims.map(c => `- **${clean(c.id)} · ${c.kind}** — ${p(c.text, [c.id])}`),
   ].join('\n');
 }

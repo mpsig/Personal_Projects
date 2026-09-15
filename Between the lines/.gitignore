@@ -5,3 +5,5 @@ node_modules/
 *.tsbuildinfo
 reports/*
 !reports/.gitkeep
+
+.DS_Store

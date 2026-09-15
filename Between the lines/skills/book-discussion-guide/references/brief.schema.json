@@ -4,10 +4,7 @@
   "properties": {
     "schemaVersion": {
       "type": "string",
-      "enum": [
-        "1.0",
-        "1.1"
-      ]
+      "const": "1.1"
     },
     "book": {
       "type": "object",
@@ -61,13 +58,6 @@
         "premise": {
           "type": "string",
           "minLength": 1
-        },
-        "claimIds": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "minLength": 1
-          }
         }
       },
       "required": [
@@ -79,8 +69,7 @@
         "genre",
         "setting",
         "pointOfView",
-        "premise",
-        "claimIds"
+        "premise"
       ],
       "additionalProperties": false
     },
@@ -94,18 +83,10 @@
           "text": {
             "type": "string",
             "minLength": 1
-          },
-          "claimIds": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "minLength": 1
-            }
           }
         },
         "required": [
-          "text",
-          "claimIds"
+          "text"
         ],
         "additionalProperties": false
       }
@@ -128,20 +109,12 @@
           "arc": {
             "type": "string",
             "minLength": 1
-          },
-          "claimIds": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "minLength": 1
-            }
           }
         },
         "required": [
           "name",
           "role",
-          "arc",
-          "claimIds"
+          "arc"
         ],
         "additionalProperties": false
       }
@@ -160,19 +133,11 @@
           "interpretation": {
             "type": "string",
             "minLength": 1
-          },
-          "claimIds": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "minLength": 1
-            }
           }
         },
         "required": [
           "name",
-          "interpretation",
-          "claimIds"
+          "interpretation"
         ],
         "additionalProperties": false
       }
@@ -199,21 +164,13 @@
           "followUp": {
             "type": "string",
             "minLength": 1
-          },
-          "claimIds": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "minLength": 1
-            }
           }
         },
         "required": [
           "question",
           "whyAsking",
           "listenFor",
-          "followUp",
-          "claimIds"
+          "followUp"
         ],
         "additionalProperties": false
       }
@@ -243,21 +200,13 @@
           "discussionPrompt": {
             "type": "string",
             "minLength": 1
-          },
-          "claimIds": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "minLength": 1
-            }
           }
         },
         "required": [
           "title",
           "kind",
           "connection",
-          "discussionPrompt",
-          "claimIds"
+          "discussionPrompt"
         ],
         "additionalProperties": false
       }
@@ -272,18 +221,10 @@
           "text": {
             "type": "string",
             "minLength": 1
-          },
-          "claimIds": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "minLength": 1
-            }
           }
         },
         "required": [
-          "text",
-          "claimIds"
+          "text"
         ],
         "additionalProperties": false
       }
@@ -291,161 +232,6 @@
     "bigQuestion": {
       "type": "string",
       "minLength": 1
-    },
-    "claims": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "minLength": 1
-          },
-          "text": {
-            "type": "string",
-            "minLength": 1
-          },
-          "kind": {
-            "type": "string",
-            "enum": [
-              "fact",
-              "interpretation"
-            ]
-          },
-          "sourceIds": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "minLength": 1
-            }
-          }
-        },
-        "required": [
-          "id",
-          "text",
-          "kind",
-          "sourceIds"
-        ],
-        "additionalProperties": false
-      }
-    },
-    "quotes": {
-      "maxItems": 5,
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "minLength": 1
-          },
-          "text": {
-            "type": "string",
-            "minLength": 1
-          },
-          "sourceId": {
-            "type": "string",
-            "minLength": 1
-          },
-          "claimIds": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "minLength": 1
-            }
-          },
-          "context": {
-            "type": "string",
-            "minLength": 1
-          }
-        },
-        "required": [
-          "id",
-          "text",
-          "sourceId",
-          "claimIds",
-          "context"
-        ],
-        "additionalProperties": false
-      }
-    },
-    "sources": {
-      "minItems": 3,
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "minLength": 1
-          },
-          "title": {
-            "type": "string",
-            "minLength": 1
-          },
-          "url": {
-            "type": "string",
-            "pattern": "^https?:\\/\\/"
-          },
-          "publisher": {
-            "type": "string",
-            "minLength": 1
-          },
-          "author": {
-            "anyOf": [
-              {
-                "type": "string",
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "publishedAt": {
-            "anyOf": [
-              {
-                "type": "string",
-                "minLength": 1
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "accessedAt": {
-            "type": "string",
-            "minLength": 1
-          },
-          "kind": {
-            "type": "string",
-            "enum": [
-              "author",
-              "publisher",
-              "educational",
-              "journalism",
-              "reference",
-              "corroboration"
-            ]
-          },
-          "credibility": {
-            "type": "string",
-            "minLength": 1
-          }
-        },
-        "required": [
-          "id",
-          "title",
-          "url",
-          "publisher",
-          "author",
-          "publishedAt",
-          "accessedAt",
-          "kind",
-          "credibility"
-        ],
-        "additionalProperties": false
-      }
     },
     "limitations": {
       "type": "array",
@@ -465,9 +251,6 @@
     "parallels",
     "authorFacts",
     "bigQuestion",
-    "claims",
-    "quotes",
-    "sources",
     "limitations"
   ],
   "additionalProperties": false

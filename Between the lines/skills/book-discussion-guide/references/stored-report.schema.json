@@ -69,7 +69,10 @@
       "properties": {
         "schemaVersion": {
           "type": "string",
-          "const": "1.0"
+          "enum": [
+            "1.0",
+            "1.1"
+          ]
         },
         "book": {
           "type": "object",
@@ -125,7 +128,6 @@
               "minLength": 1
             },
             "claimIds": {
-              "minItems": 1,
               "type": "array",
               "items": {
                 "type": "string",
@@ -159,7 +161,6 @@
                 "minLength": 1
               },
               "claimIds": {
-                "minItems": 1,
                 "type": "array",
                 "items": {
                   "type": "string",
@@ -194,7 +195,6 @@
                 "minLength": 1
               },
               "claimIds": {
-                "minItems": 1,
                 "type": "array",
                 "items": {
                   "type": "string",
@@ -227,7 +227,6 @@
                 "minLength": 1
               },
               "claimIds": {
-                "minItems": 1,
                 "type": "array",
                 "items": {
                   "type": "string",
@@ -267,7 +266,6 @@
                 "minLength": 1
               },
               "claimIds": {
-                "minItems": 1,
                 "type": "array",
                 "items": {
                   "type": "string",
@@ -312,7 +310,6 @@
                 "minLength": 1
               },
               "claimIds": {
-                "minItems": 1,
                 "type": "array",
                 "items": {
                   "type": "string",
@@ -342,7 +339,6 @@
                 "minLength": 1
               },
               "claimIds": {
-                "minItems": 1,
                 "type": "array",
                 "items": {
                   "type": "string",
@@ -362,7 +358,6 @@
           "minLength": 1
         },
         "claims": {
-          "minItems": 10,
           "type": "array",
           "items": {
             "type": "object",
@@ -383,7 +378,6 @@
                 ]
               },
               "sourceIds": {
-                "minItems": 1,
                 "type": "array",
                 "items": {
                   "type": "string",
@@ -401,7 +395,6 @@
           }
         },
         "quotes": {
-          "minItems": 2,
           "maxItems": 5,
           "type": "array",
           "items": {
@@ -420,7 +413,6 @@
                 "minLength": 1
               },
               "claimIds": {
-                "minItems": 1,
                 "type": "array",
                 "items": {
                   "type": "string",
